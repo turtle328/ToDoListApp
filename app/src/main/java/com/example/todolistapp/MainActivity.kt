@@ -7,6 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
@@ -48,13 +50,11 @@ fun ToDoListScreen(modifier: Modifier = Modifier) {
             state = taskTextState,
             label = { Text("Enter a new task") }
         )
-        Button(onClick = {
-            val task = taskTextState.text.toString()
-
-            if (task.isNotBlank()) {
-                tasks.add(task)
+        Button(
+            onClick = {
+                handleAddTask(taskTextState, tasks)
             }
-        }) {
+        ) {
             Text("Add Task")
         }
 
@@ -70,4 +70,16 @@ fun ToDoListScreenPreview() {
     ToDoListAppTheme {
         ToDoListScreen()
     }
+}
+
+fun handleAddTask(taskTextState: TextFieldState, tasks: MutableList<String>) {
+    val task = taskTextState.text.toString()
+
+    if (task.isBlank())
+    {
+        return // Do nothing.
+    }
+
+    tasks.add(task)
+    taskTextState.clearText()
 }
