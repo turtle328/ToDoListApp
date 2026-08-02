@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
@@ -68,8 +69,10 @@ fun ToDoListScreen(modifier: Modifier = Modifier) {
             Text("Add Task")
         }
 
-        tasks.forEach { task ->
-            Text(text = task)
+        LazyColumn() {
+            items(tasks.size) { index ->
+                Text(text = tasks[index])
+            }
         }
     }
 }
