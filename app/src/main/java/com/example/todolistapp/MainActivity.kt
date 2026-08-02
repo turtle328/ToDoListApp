@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
@@ -14,8 +15,12 @@ import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -50,9 +55,11 @@ fun ToDoListScreen(modifier: Modifier = Modifier) {
     val taskTextState = rememberTextFieldState()
     val tasks = remember { mutableStateListOf<TodoItem>() }
 
-    Column(modifier = modifier
-        .fillMaxSize()
-        .padding(24.dp))
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(24.dp)
+    )
     {
         Text(text = "Todo List")
         OutlinedTextField(
@@ -60,7 +67,7 @@ fun ToDoListScreen(modifier: Modifier = Modifier) {
                 imeAction = ImeAction.Done
             ),
             onKeyboardAction = { defaultAction ->
-                if (taskTextState.text.isBlank()){
+                if (taskTextState.text.isBlank()) {
                     defaultAction()
                 } else {
                     handleAddTask(taskTextState, tasks)
@@ -82,15 +89,31 @@ fun ToDoListScreen(modifier: Modifier = Modifier) {
         LazyColumn {
             items(tasks.size) { index ->
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Checkbox(checked = tasks[index].isCompleted, onCheckedChange = {
                         tasks[index] = tasks[index].copy(isCompleted = it)
                     })
                     Text(
-                        color = if (tasks[index].isCompleted) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f) else MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.weight(1f),
+                        color = if (tasks[index].isCompleted) MaterialTheme.colorScheme.onSurface.copy(
+                            alpha = 0.5f
+                        ) else MaterialTheme.colorScheme.onSurface,
                         textDecoration = if (tasks[index].isCompleted) TextDecoration.LineThrough else TextDecoration.None,
-                        text = tasks[index].title)
+                        text = tasks[index].title
+                    )
+                    IconButton(
+                        onClick = {
+                            tasks.removeAt(index)
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete task",
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                    }
                 }
             }
         }
@@ -108,8 +131,7 @@ fun ToDoListScreenPreview() {
 fun handleAddTask(taskTextState: TextFieldState, tasks: MutableList<TodoItem>) {
     val taskString = taskTextState.text.toString()
 
-    if (taskString.isBlank())
-    {
+    if (taskString.isBlank()) {
         return // Do nothing.
     }
 
