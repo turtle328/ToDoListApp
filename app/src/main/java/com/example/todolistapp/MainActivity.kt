@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todolistapp.ui.theme.ToDoListAppTheme
@@ -85,7 +86,9 @@ fun ToDoListScreen(modifier: Modifier = Modifier) {
                     Checkbox(checked = tasks[index].isCompleted, onCheckedChange = {
                         tasks[index] = tasks[index].copy(isCompleted = it)
                     })
-                    Text(text = tasks[index].title)
+                    Text(
+                        textDecoration = if (tasks[index].isCompleted) TextDecoration.LineThrough else TextDecoration.None,
+                        text = tasks[index].title)
                 }
             }
         }
