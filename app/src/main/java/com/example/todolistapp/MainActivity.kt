@@ -16,6 +16,7 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -87,6 +88,7 @@ fun ToDoListScreen(modifier: Modifier = Modifier) {
                         tasks[index] = tasks[index].copy(isCompleted = it)
                     })
                     Text(
+                        color = if (tasks[index].isCompleted) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f) else MaterialTheme.colorScheme.onSurface,
                         textDecoration = if (tasks[index].isCompleted) TextDecoration.LineThrough else TextDecoration.None,
                         text = tasks[index].title)
                 }
