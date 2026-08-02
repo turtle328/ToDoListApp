@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun ToDoListScreen(modifier: Modifier = Modifier) {
     val taskTextState = rememberTextFieldState()
-    val tasks = remember { mutableStateListOf<String>() }
+    val tasks = remember { mutableStateListOf<TodoItem>() }
 
     Column(modifier = modifier
         .fillMaxSize()
@@ -69,9 +69,9 @@ fun ToDoListScreen(modifier: Modifier = Modifier) {
             Text("Add Task")
         }
 
-        LazyColumn() {
+        LazyColumn {
             items(tasks.size) { index ->
-                Text(text = tasks[index])
+                Text(text = tasks[index].title)
             }
         }
     }
@@ -85,14 +85,18 @@ fun ToDoListScreenPreview() {
     }
 }
 
-fun handleAddTask(taskTextState: TextFieldState, tasks: MutableList<String>) {
-    val task = taskTextState.text.toString()
+fun handleAddTask(taskTextState: TextFieldState, tasks: MutableList<TodoItem>) {
+    val taskString = taskTextState.text.toString()
 
-    if (task.isBlank())
+    if (taskString.isBlank())
     {
         return // Do nothing.
     }
 
-    tasks.add(task)
+    val todoItem = TodoItem(taskString)
+
+    tasks.add(todoItem)
     taskTextState.clearText()
 }
+
+data class TodoItem(val title: String, val isCompleted: Boolean = false)
