@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -56,8 +57,12 @@ fun ToDoListScreen(modifier: Modifier = Modifier) {
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done
             ),
-            onKeyboardAction = { _ ->
-                handleAddTask(taskTextState, tasks)
+            onKeyboardAction = { defaultAction ->
+                if (taskTextState.text.isBlank()){
+                    defaultAction()
+                } else {
+                    handleAddTask(taskTextState, tasks)
+                }
             },
             lineLimits = TextFieldLineLimits.SingleLine,
             state = taskTextState,
@@ -73,13 +78,14 @@ fun ToDoListScreen(modifier: Modifier = Modifier) {
 
         LazyColumn {
             items(tasks.size) { index ->
-                Row {
-                    Text(text = tasks[index].title)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Checkbox(checked = tasks[index].isCompleted, onCheckedChange = {
                         tasks[index] = tasks[index].copy(isCompleted = it)
                     })
+                    Text(text = tasks[index].title)
                 }
-
             }
         }
     }
