@@ -69,6 +69,7 @@ fun ToDoListScreen(modifier: Modifier = Modifier) {
             label = { Text("Enter a new task") }
         )
         Button(
+            enabled = taskTextState.text.isNotBlank(),
             onClick = {
                 handleAddTask(taskTextState, tasks)
             }
