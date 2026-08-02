@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -47,6 +48,7 @@ fun ToDoListScreen(modifier: Modifier = Modifier) {
     {
         Text(text = "Todo List")
         OutlinedTextField(
+            lineLimits = TextFieldLineLimits.SingleLine,
             state = taskTextState,
             label = { Text("Enter a new task") }
         )
