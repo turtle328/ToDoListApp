@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ToDoListAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    ToDoListScreen(modifier = Modifier.padding(innerPadding))
+                    TodoListRoute(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -50,12 +50,29 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ToDoListScreen(
+fun TodoListRoute(
     modifier: Modifier = Modifier,
     viewModel: TodoListViewModel = viewModel()
+)
+{
+    ToDoListScreen(
+        viewModel.tasks,
+        viewModel::addTask,
+        viewModel::setTaskCompleted,
+        viewModel::deleteTask,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun ToDoListScreen(
+    tasks: List<TodoItem>,
+    onAddTask: (String) -> Unit,
+    onTaskCompleted: (Int, Boolean) -> Unit,
+    onDeleteTask: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val taskTextState = rememberTextFieldState()
-    val tasks = viewModel.tasks
 
     Column(
         modifier = modifier
@@ -72,7 +89,7 @@ fun ToDoListScreen(
                 if (taskTextState.text.isBlank()) {
                     defaultAction()
                 } else {
-                    handleAddTask(taskTextState, viewModel)
+                    handleAddTask(taskTextState, onAddTask)
                 }
             },
             lineLimits = TextFieldLineLimits.SingleLine,
@@ -82,7 +99,7 @@ fun ToDoListScreen(
         Button(
             enabled = taskTextState.text.isNotBlank(),
             onClick = {
-                handleAddTask(taskTextState, viewModel)
+                handleAddTask(taskTextState, onAddTask)
             }
         ) {
             Text("Add Task")
@@ -95,7 +112,7 @@ fun ToDoListScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Checkbox(checked = tasks[index].isCompleted, onCheckedChange = {
-                        viewModel.setTaskCompleted(index, it)
+                        onTaskCompleted(index, it)
                     })
                     Text(
                         modifier = Modifier.weight(1f),
@@ -107,7 +124,7 @@ fun ToDoListScreen(
                     )
                     IconButton(
                         onClick = {
-                            viewModel.deleteTask(index)
+                            onDeleteTask(index)
                         }
                     ) {
                         Icon(
@@ -126,12 +143,12 @@ fun ToDoListScreen(
 @Composable
 fun ToDoListScreenPreview() {
     ToDoListAppTheme {
-        ToDoListScreen()
+        TodoListRoute()
     }
 }
 
-fun handleAddTask(taskTextState: TextFieldState, viewModel: TodoListViewModel) {
+fun handleAddTask(taskTextState: TextFieldState, addTaskFunction: (String) -> Unit) {
     val taskString = taskTextState.text.toString()
-    viewModel.addTask(taskString)
+    addTaskFunction(taskString)
     taskTextState.clearText()
 }
