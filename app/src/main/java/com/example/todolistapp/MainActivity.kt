@@ -26,8 +26,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
@@ -57,7 +55,7 @@ fun ToDoListScreen(
     viewModel: TodoListViewModel = viewModel()
 ) {
     val taskTextState = rememberTextFieldState()
-    val tasks = remember { mutableStateListOf<TodoItem>() }
+    val tasks = viewModel.tasks
 
     Column(
         modifier = modifier
@@ -74,7 +72,7 @@ fun ToDoListScreen(
                 if (taskTextState.text.isBlank()) {
                     defaultAction()
                 } else {
-                    handleAddTask(taskTextState, tasks)
+                    handleAddTask(taskTextState, viewModel)
                 }
             },
             lineLimits = TextFieldLineLimits.SingleLine,
@@ -84,7 +82,7 @@ fun ToDoListScreen(
         Button(
             enabled = taskTextState.text.isNotBlank(),
             onClick = {
-                handleAddTask(taskTextState, tasks)
+                handleAddTask(taskTextState, viewModel)
             }
         ) {
             Text("Add Task")
@@ -97,7 +95,7 @@ fun ToDoListScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Checkbox(checked = tasks[index].isCompleted, onCheckedChange = {
-                        tasks[index] = tasks[index].copy(isCompleted = it)
+                        viewModel.setTaskCompleted(index, it)
                     })
                     Text(
                         modifier = Modifier.weight(1f),
@@ -109,7 +107,7 @@ fun ToDoListScreen(
                     )
                     IconButton(
                         onClick = {
-                            tasks.removeAt(index)
+                            viewModel.deleteTask(index)
                         }
                     ) {
                         Icon(
@@ -132,15 +130,8 @@ fun ToDoListScreenPreview() {
     }
 }
 
-fun handleAddTask(taskTextState: TextFieldState, tasks: MutableList<TodoItem>) {
+fun handleAddTask(taskTextState: TextFieldState, viewModel: TodoListViewModel) {
     val taskString = taskTextState.text.toString()
-
-    if (taskString.isBlank()) {
-        return // Do nothing.
-    }
-
-    val todoItem = TodoItem(taskString)
-
-    tasks.add(todoItem)
+    viewModel.addTask(taskString)
     taskTextState.clearText()
 }
