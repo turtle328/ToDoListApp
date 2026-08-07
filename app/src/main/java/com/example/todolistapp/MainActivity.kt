@@ -107,24 +107,27 @@ fun ToDoListScreen(
 
         LazyColumn {
             items(tasks.size) { index ->
+                val task = tasks[index]
+                val taskId = task.id
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Checkbox(checked = tasks[index].isCompleted, onCheckedChange = {
-                        onTaskCompleted(index, it)
+                    Checkbox(checked = task.isCompleted, onCheckedChange = {
+                        onTaskCompleted(taskId, it)
                     })
                     Text(
                         modifier = Modifier.weight(1f),
-                        color = if (tasks[index].isCompleted) MaterialTheme.colorScheme.onSurface.copy(
+                        color = if (task.isCompleted) MaterialTheme.colorScheme.onSurface.copy(
                             alpha = 0.5f
                         ) else MaterialTheme.colorScheme.onSurface,
-                        textDecoration = if (tasks[index].isCompleted) TextDecoration.LineThrough else TextDecoration.None,
-                        text = tasks[index].title
+                        textDecoration = if (task.isCompleted) TextDecoration.LineThrough else TextDecoration.None,
+                        text = task.title
                     )
                     IconButton(
                         onClick = {
-                            onDeleteTask(index)
+                            onDeleteTask(taskId)
                         }
                     ) {
                         Icon(
