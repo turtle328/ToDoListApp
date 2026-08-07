@@ -35,6 +35,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todolistapp.ui.theme.ToDoListAppTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +52,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ToDoListScreen(modifier: Modifier = Modifier) {
+fun ToDoListScreen(
+    modifier: Modifier = Modifier,
+    viewModel: TodoListViewModel = viewModel()
+) {
     val taskTextState = rememberTextFieldState()
     val tasks = remember { mutableStateListOf<TodoItem>() }
 
@@ -140,5 +144,3 @@ fun handleAddTask(taskTextState: TextFieldState, tasks: MutableList<TodoItem>) {
     tasks.add(todoItem)
     taskTextState.clearText()
 }
-
-data class TodoItem(val title: String, val isCompleted: Boolean = false)
