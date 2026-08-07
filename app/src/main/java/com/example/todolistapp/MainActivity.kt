@@ -143,12 +143,24 @@ fun ToDoListScreen(
 @Composable
 fun ToDoListScreenPreview() {
     ToDoListAppTheme {
-        TodoListRoute()
+        ToDoListScreen(
+            tasks = getFakeTasks(),
+            onAddTask = {},
+            onTaskCompleted = { _, _ -> },
+            onDeleteTask = {}
+        )
     }
 }
 
-fun handleAddTask(taskTextState: TextFieldState, addTaskFunction: (String) -> Unit) {
+fun handleAddTask(taskTextState: TextFieldState, onAddTask: (String) -> Unit) {
     val taskString = taskTextState.text.toString()
-    addTaskFunction(taskString)
+    onAddTask(taskString)
     taskTextState.clearText()
+}
+
+fun getFakeTasks() : List<TodoItem> {
+    val tasks = mutableListOf<TodoItem>()
+    tasks.add(TodoItem("Task 1", false))
+    tasks.add(TodoItem("Task 2", true))
+    return tasks
 }
