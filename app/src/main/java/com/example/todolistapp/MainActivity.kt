@@ -160,7 +160,7 @@ fun handleAddTask(taskTextState: TextFieldState, onAddTask: (String) -> Unit) {
 
 fun getFakeTasks() : List<TodoItem> {
     val tasks = mutableListOf<TodoItem>()
-    tasks.add(TodoItem("Task 1", false))
-    tasks.add(TodoItem("Task 2", true))
+    tasks.add(TodoItem(0,"Task 1", false))
+    tasks.add(TodoItem(1,"Task 2", true))
     return tasks
 }
