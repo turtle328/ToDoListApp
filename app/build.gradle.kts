@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.room3.runtime)
+    implementation(libs.androidx.sqlite.bundled)
     ksp(libs.androidx.room3.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
