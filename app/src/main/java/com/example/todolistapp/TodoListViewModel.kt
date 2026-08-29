@@ -31,7 +31,7 @@ class TodoListViewModel : ViewModel() {
         }
     }
 
-    fun findTask(taskId: Int): Int {
+    private fun findTask(taskId: Int): Int {
         return _tasks.indexOfFirst( { task -> task.id == taskId } )
     }
 }
