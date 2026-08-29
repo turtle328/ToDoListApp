@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
@@ -106,16 +107,17 @@ fun ToDoListScreen(
         }
 
         LazyColumn {
-            items(tasks.size) { index ->
-                val task = tasks[index]
-                val taskId = task.id
+            items(
+                items = tasks,
+                key = { task -> task.id }
+            ) { task ->
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Checkbox(checked = task.isCompleted, onCheckedChange = {
-                        onTaskCompleted(taskId, it)
+                        onTaskCompleted(task.id, it)
                     })
                     Text(
                         modifier = Modifier.weight(1f),
@@ -127,7 +129,7 @@ fun ToDoListScreen(
                     )
                     IconButton(
                         onClick = {
-                            onDeleteTask(taskId)
+                            onDeleteTask(task.id)
                         }
                     ) {
                         Icon(
