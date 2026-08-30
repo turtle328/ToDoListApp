@@ -3,7 +3,9 @@ package com.example.todolistapp
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 
-class TodoListViewModel : ViewModel() {
+class TodoListViewModel(
+    private val todoDao: TodoDao
+) : ViewModel() {
     private val _tasks = mutableStateListOf<TodoItem>()
     private var nextId = 0
     val tasks: List<TodoItem> = _tasks
