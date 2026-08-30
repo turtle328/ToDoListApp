@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TodoListRoute(
     modifier: Modifier = Modifier,
-    viewModel: TodoListViewModel = viewModel()
+    viewModel: TodoListViewModel = viewModel(factory = TodoListViewModel.Factory)
 )
 {
     ToDoListScreen(
