@@ -11,7 +11,7 @@ interface TodoDao {
     suspend fun insertTask(task: TodoItem)
 
     @Query("SELECT * FROM TodoItem")
-    suspend fun getAllTasks(): Flow<List<TodoItem>>
+    fun getAllTasks(): Flow<List<TodoItem>>
 
     @Query("UPDATE TodoItem SET isCompleted = :isCompleted WHERE id = :id")
     suspend fun setTaskCompleted(id: Int, isCompleted: Boolean)
